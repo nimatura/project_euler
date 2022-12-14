@@ -134,3 +134,29 @@ def max_triangle_sum(i, j, tri, memo=None):
         else:
             memo[i, j] = max_triangle_sum(i - 1, j - 1, tri, memo=memo) + tri[i][j]
         return memo[i, j]
+
+
+def min_square_sum(i, j, rectangle, memo=None):
+    """
+    Dynamic programming (memoization approach) method to find the min sum path of a rectangle by only moving right and
+    down.
+    """
+    if memo is None:
+        memo = {}
+    if (i, j) in memo.keys():
+        return memo[i, j]
+    if i == 0 and j == 0:
+        memo[i, j] = rectangle[i][j]
+        return memo[i, j]
+    elif i == 0 and j > 0:
+        memo[i, j] = min_square_sum(i, j - 1, rectangle, memo=memo) + rectangle[i][j]
+        return memo[i, j]
+    elif i > 0 and j == 0:
+        memo[i, j] = min_square_sum(i - 1, j, rectangle, memo=memo) + rectangle[i][j]
+        return memo[i, j]
+    else:
+        memo[i, j] = min([
+            min_square_sum(i - 1, j, rectangle, memo=memo),
+            min_square_sum(i, j - 1, rectangle, memo=memo)
+        ]) + rectangle[i][j]
+        return memo[i, j]
